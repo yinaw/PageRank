@@ -16,7 +16,7 @@ public class Driver {
         for(int i=0;  i<count;  i++) {
             String[] args1 = {transitionMatrix, prMatrix+i, unitState+i};
             multiplication.main(args1);
-            String[] args2 = {unitState + i, prMatrix+(i+1)};
+            String[] args2 = {unitState + i, prMatrix+i, prMatrix+(i+1)};
             sum.main(args2);
         }
     }

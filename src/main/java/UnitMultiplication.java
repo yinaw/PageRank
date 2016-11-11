@@ -24,6 +24,8 @@ public class UnitMultiplication {
             String line = value.toString().trim();
             String[] fromTo = line.split("\t");
 
+            //a	b,c,d
+
             if(fromTo.length == 1 || fromTo[1].trim().equals("")) {
                 return;
             }
@@ -31,6 +33,10 @@ public class UnitMultiplication {
             String[] tos = fromTo[1].split(",");
             for (String to: tos) {
                 context.write(new Text(from), new Text(to + "=" + (double)1/tos.length));
+                // a    b=1/3      a   c=1/3     a   d=1/3
+                // b    a=1/2      b   d=1/2
+                // c    a=1
+                // d    b=1/2      d   c=1/2
             }
         }
     }
@@ -40,7 +46,14 @@ public class UnitMultiplication {
         @Override
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             String[] pr = value.toString().trim().split("\t");
-            context.write(new Text(pr[0]), new Text(pr[1]));
+
+            String beta = String.valueOf(Double.parseDouble(pr[1]) * (1 - 1/5));  // pr * (1 - b)  b = 1/5 here.
+            context.write(new Text(pr[0]), new Text(beta));
+
+            //a  1/4
+            //b   1/4
+            //c  1/4
+            //d   1/4
         }
     }
 
